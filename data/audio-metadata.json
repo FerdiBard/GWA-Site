@@ -6,7 +6,12 @@
       "description": "A soothing bedtime story set in a magical forest. Perfect for sleep.",
       "category": "sleep",
       "duration": "28:45",
-      "tags": ["sleep", "story", "relaxation", "nature"],
+      "tags": [
+        "sleep",
+        "story",
+        "relaxation",
+        "nature"
+      ],
       "soundgasmUrl": "",
       "youtubeUrl": ""
     },
@@ -16,7 +21,12 @@
       "description": "Relaxing tapping and whispering sounds designed to trigger ASMR response.",
       "category": "asmr",
       "duration": "15:30",
-      "tags": ["asmr", "tapping", "whisper", "tingles"],
+      "tags": [
+        "asmr",
+        "tapping",
+        "whisper",
+        "tingles"
+      ],
       "soundgasmUrl": "",
       "youtubeUrl": ""
     }
@@ -28,9 +38,28 @@
       "description": "A sensual audio experience with intimate roleplay elements.",
       "category": "roleplay",
       "duration": "22:30",
-      "tags": ["roleplay", "intimate", "sensual", "scenario"],
+      "tags": [
+        "roleplay",
+        "intimate",
+        "sensual",
+        "scenario"
+      ],
       "soundgasmUrl": "",
       "youtubeUrl": ""
+    },
+    {
+      "id": 102,
+      "title": "Test",
+      "description": "test",
+      "category": "joi",
+      "duration": "11:11",
+      "tags": [
+        "sleep",
+        "erotic",
+        "etc"
+      ],
+      "soundgasmUrl": "https://soundgasm.net/u/ClassWarAndPuppies/2026-06-22-Episode-1047-Lets-Lose-Lots-of-Money-feat-Ed-Zitron",
+      "youtubeUrl": "https://www.youtube.com/watch?v=wp43OdtAAkM&list=RDwp43OdtAAkM&start_radio=1"
     }
   ]
 }
