@@ -7,7 +7,9 @@ let audioDatabase = {
 // Load data from JSON file
 async function loadAudioDatabase() {
     try {
-        const response = await fetch('../data/audio-metadata.json');
+        // Add cache-busting parameter to force fresh data
+        const timestamp = new Date().getTime();
+        const response = await fetch(`./data/audio-metadata.json?t=${timestamp}`);
         audioDatabase = await response.json();
         loadAudios();
     } catch (error) {
