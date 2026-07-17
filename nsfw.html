@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>18+ Audio - Ferdinand Bardamu</title>
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body class="nsfw-active">
+    <nav class="main-navbar">
+        <div class="navbar-container">
+            <div class="navbar-section navbar-left">
+                <a href="sfw.html" id="navSfw">ASMR & Sleep</a>
+            </div>
+            <div class="navbar-section navbar-center">
+                <a href="index.html" id="navHome">Ferdinand Bardamu</a>
+            </div>
+            <div class="navbar-section navbar-right">
+                <a href="javascript:void(0)" onclick="goToNSFW()" id="navNsfw" class="active">18+ Audio</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-container with-sidebar">
+        <div class="page-main">
+            <header class="page-header">
+                <div class="header-top">
+                    <h1 style="color: #A10D1E;">18+ Audio Archive</h1>
+                </div>
+
+            <div class="search-section">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Search audios by title, tags, or description..."
+                    class="search-box"
+                    onkeyup="filterAudios()"
+                >
+                <select id="categoryFilter" class="filter-select" onchange="filterAudios()">
+                    <option value="">All Categories</option>
+                    <option value="roleplay">Roleplay</option>
+                    <option value="joi">JOI</option>
+                    <option value="moaning">Moaning</option>
+                    <option value="erotic">Erotic Audio</option>
+                    <option value="phone-sex">Phone Sex</option>
+                    <option value="fantasy">Fantasy</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+        </header>
+
+        <main class="content-area">
+            <div class="audio-grid" id="audioGrid">
+                <!-- Audios will be loaded here by JavaScript -->
+                <div class="loading">Loading audios...</div>
+            </div>
+
+            <div id="noResults" class="no-results hidden">
+                <p>No audios match your search. Try adjusting your filters.</p>
+            </div>
+        </main>
+
+        <footer class="page-footer">
+            <p>&copy; 2026 Ferdinand Bardamu</p>
+            <p class="nsfw-notice">This content is intended for adults only.</p>
+            <div class="footer-links">
+                <a href="https://www.reddit.com" target="_blank" rel="noopener noreferrer">Reddit</a>
+                <span>•</span>
+                <a href="https://www.subscribestar.com" target="_blank" rel="noopener noreferrer">SubscribeStar</a>
+            </div>
+        </footer>
+        </div>
+        <aside class="sidebar sidebar-right">
+            <h3>This Archive</h3>
+            <p>This archive is a curated selection of my mature audio content. For a more complete list of audios, visit my <a href="https://www.reddit.com" target="_blank" rel="noopener noreferrer">Reddit profile</a></p>
+            <h3 style="margin-top: 25px;">Exclusive Content</h3>
+            <p>Private releases, raw audio files, scripts, and custom audio commissions are available through <a href="https://www.subscribestar.com" target="_blank" rel="noopener noreferrer">SubscribeStar</a></p>
+            <h3 style="margin-top: 25px;">Requests?</h3>
+            <p>Have an idea or unsatisfied interest? Send me a request at <a href="mailto:FerdiBard@proton.me" target="_blank" rel="noopener noreferrer">FerdiBard@proton.me</a></p>
+        </aside>
+    </div>
+
+
+    <!-- Age Gate Modal -->
+    <div id="ageGateModal" class="modal hidden">
+        <div class="modal-content age-gate-modal">
+            <h2>Age Verification</h2>
+            <p>This section contains adult content.</p>
+            <p>You must be at least 18 years old to access this content.</p>
+            
+            <div class="age-gate-form">
+                <label for="birthDate">Enter your birth date:</label>
+                <input type="date" id="birthDate" max="">
+                <button onclick="confirmAge()" class="btn btn-secondary">Verify Age</button>
+            </div>
+
+            <p class="age-gate-disclaimer">
+                By confirming, you agree that you are 18 or older and understand the nature of this content.
+            </p>
+
+            <button onclick="closeAgeGate()" class="btn btn-secondary-outline">Back</button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/archive.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+{
+  "sfw": [
+    {
+      "id": 1,
+      "title": "Deep Sleep Story - The Enchanted Forest",
+      "description": "A soothing bedtime story set in a magical forest. Perfect for sleep.",
+      "category": "sleep",
+      "duration": "28:45",
+      "tags": ["sleep", "story", "relaxation", "nature"],
+      "soundgasmUrl": "",
+      "youtubeUrl": ""
+    },
+    {
+      "id": 2,
+      "title": "ASMR Whisper - Gentle Tapping Triggers",
+      "description": "Relaxing tapping and whispering sounds designed to trigger ASMR response.",
+      "category": "asmr",
+      "duration": "15:30",
+      "tags": ["asmr", "tapping", "whisper", "tingles"],
+      "soundgasmUrl": "",
+      "youtubeUrl": ""
+    }
+  ],
+  "nsfw": [
+    {
+      "id": 101,
+      "title": "Intimate Roleplay - Office Fantasy",
+      "description": "A sensual audio experience with intimate roleplay elements.",
+      "category": "roleplay",
+      "duration": "22:30",
+      "tags": ["roleplay", "intimate", "sensual", "scenario"],
+      "soundgasmUrl": "",
+      "youtubeUrl": ""
+    }
+  ]
+}

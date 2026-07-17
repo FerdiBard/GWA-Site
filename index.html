@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferdinand Bardamu - ASMR & Audio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body class="home-active">
+    <nav class="main-navbar">
+        <div class="navbar-container">
+            <div class="navbar-section navbar-left">
+                <a href="sfw.html" id="navSfw">ASMR & Sleep</a>
+            </div>
+            <div class="navbar-section navbar-center">
+                <a href="index.html" id="navHome" class="active">Home</a>
+            </div>
+            <div class="navbar-section navbar-right">
+                <a href="javascript:void(0)" onclick="goToNSFW()" id="navNsfw">18+ Audio</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="home-container">
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1>Ferdinand Bardamu</h1>
+                <p class=\"subtitle\">Spoken audio, from ASMR to 18+</p>
+            </div>
+        </div>
+
+        <div class="content-choice container-fluid">
+            <div class="row w-100 h-100">
+                <div class="col-2 d-flex align-items-center justify-content-center">
+                    <div class="choice-card sfw-card" onclick="window.location.href='sfw.html'">
+                        <h2>ASMR & Sleep</h2>
+                        <div class="btn btn-primary">Explore</div>
+                    </div>
+                </div>
+
+                <div class="col-8 d-flex align-items-center justify-content-center">
+                    <div class="choice-center">
+                        <h2>Choose Your Experience</h2>
+                        <p>This site hosts <i>some</i> of my audio content: relaxing sleep aids and more mature audio. Questions or requests can be directed toward the email found at the bottom of the page.</p>
+                        <p>Neither page is a complete archive. If you're looking for specific genres or themes, please check the social media links. If it's not there, feel free to send a request. I try to keep track of interests. Lastly, only trust the profiles/contacts you find on this page. Anyone else is not me.</p>
+                    </div>
+                </div>
+
+                <div class="col-2 d-flex align-items-center justify-content-center">
+                    <div class="choice-card nsfw-card" onclick="verifyAge()">
+                        <h2>18+ Audios</h2>
+                        <div class="btn btn-secondary">Enter</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-info">
+            <p>&copy; 2026 Ferdinand Bardamu</p>
+            <a href="mailto:FerdiBard@proton.me" target="_blank" rel="noopener noreferrer">FerdiBard@proton.me</a>
+        </div>
+    </div>
+
+    <!-- Age Gate Modal -->
+    <div id="ageGateModal" class="modal hidden">
+        <div class="modal-content age-gate-modal">
+            <h2>Age Verification</h2>
+            <p>This section contains adult content.</p>
+            <p>You must be at least 18 years old to access this content.</p>
+            
+            <div class="age-gate-form">
+                <label for="birthDate">Enter your birth date:</label>
+                <input type="date" id="birthDate" max="">
+                <button onclick="confirmAge()" class="btn btn-secondary">Verify Age</button>
+            </div>
+
+            <p class="age-gate-disclaimer">
+                By confirming, you agree that you are 18 or older and understand the nature of this content.
+            </p>
+
+            <button onclick="closeAgeGate()" class="btn btn-secondary-outline">Back</button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
