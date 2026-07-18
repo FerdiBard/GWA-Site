@@ -1,21 +1,6 @@
 {
   "sfw": [
     {
-      "id": 1,
-      "title": "Deep Sleep Story - The Enchanted Forest",
-      "description": "A soothing bedtime story set in a magical forest. Perfect for sleep.",
-      "category": "sleep",
-      "duration": "28:45",
-      "tags": [
-        "sleep",
-        "story",
-        "relaxation",
-        "nature"
-      ],
-      "soundgasmUrl": "",
-      "youtubeUrl": ""
-    },
-    {
       "id": 103,
       "title": "test 2 sfw",
       "description": "test description",
