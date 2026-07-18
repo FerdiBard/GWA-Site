@@ -34,6 +34,15 @@
             font-size: 28px;
         }
 
+        h2 {
+            color: #333;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 20px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
         .form-group {
             margin-bottom: 20px;
         }
@@ -98,6 +107,14 @@
             cursor: not-allowed;
         }
 
+        .delete-btn {
+            background: #c44;
+        }
+
+        .delete-btn:hover {
+            background: #a33;
+        }
+
         .setup-section {
             background: #e8e8e8;
             padding: 20px;
@@ -111,6 +128,8 @@
             font-size: 16px;
             color: #333;
             margin-bottom: 12px;
+            border: none;
+            margin-top: 0;
         }
 
         .setup-section p {
@@ -153,7 +172,6 @@
         .message.info {
             background: #d9d9d9;
             color: #333;
-            border: 1px solid #bbb;
             border: 1px solid #bee5eb;
             display: block;
         }
@@ -194,6 +212,54 @@
 
         a:hover {
             text-decoration: underline;
+        }
+
+        .audio-list {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+
+        .audio-item {
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .audio-item:last-child {
+            border-bottom: none;
+        }
+
+        .audio-item-title {
+            flex: 1;
+            color: #333;
+        }
+
+        .audio-item-category {
+            font-size: 12px;
+            color: #999;
+            margin: 0 10px;
+        }
+
+        .delete-item-btn {
+            background: #c44;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .delete-item-btn:hover {
+            background: #a33;
         }
 
         /* Mobile styles */
@@ -248,6 +314,17 @@
             button {
                 padding: 10px;
                 font-size: 14px;
+            }
+
+            .audio-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .delete-item-btn {
+                margin-left: 0;
+                margin-top: 8px;
+                width: 100%;
             }
         }
 
@@ -335,6 +412,7 @@
 
         <!-- Audio Form -->
         <form id="audioForm">
+            <h2>Add New Audio</h2>
             <div class="form-group">
                 <label for="title">Title *</label>
                 <input type="text" id="title" name="title" placeholder="e.g., Deep Sleep Story" required>
@@ -394,6 +472,16 @@
             <button type="submit" id="submitBtn">Add Audio</button>
         </form>
 
+        <!-- Delete Section -->
+        <div id="deleteSection" class="hidden">
+            <h2>Remove Audio</h2>
+            <div class="form-group">
+                <label for="filterAudios">Search and delete entries:</label>
+                <input type="text" id="filterAudios" placeholder="Search by title..." autocomplete="off">
+            </div>
+            <div class="audio-list" id="audioList"></div>
+        </div>
+
         <div id="message" class="message"></div>
     </div>
 
@@ -402,6 +490,7 @@
         let githubToken = localStorage.getItem('githubToken');
         let repoOwner = new URLSearchParams(window.location.search).get('owner');
         let repoName = new URLSearchParams(window.location.search).get('repo');
+        let currentAudioData = null;
 
         // Try to get from localStorage if not in URL
         if (!repoOwner || !repoName) {
@@ -412,6 +501,9 @@
         const form = document.getElementById('audioForm');
         const messageDiv = document.getElementById('message');
         const setupSection = document.getElementById('setupSection');
+        const deleteSection = document.getElementById('deleteSection');
+        const audioList = document.getElementById('audioList');
+        const filterInput = document.getElementById('filterAudios');
 
         // Update UI based on setup status
         function updateSetupStatus() {
@@ -420,8 +512,11 @@
                 document.getElementById('authStatus').innerHTML = `Connected to <strong>${repoOwner}/${repoName}</strong>`;
                 document.getElementById('authStatus').className = 'auth-status connected';
                 form.style.display = 'block';
+                deleteSection.classList.remove('hidden');
+                loadAudiosForDelete();
             } else {
                 form.style.display = 'none';
+                deleteSection.classList.add('hidden');
             }
         }
 
@@ -471,6 +566,117 @@
             messageDiv.textContent = text;
         }
 
+        async function loadAudiosForDelete() {
+            try {
+                const response = await fetch(
+                    `https://api.github.com/repos/${repoOwner}/${repoName}/contents/data/audio-metadata.json`,
+                    { headers: { 'Authorization': `token ${githubToken}` } }
+                );
+
+                if (!response.ok) {
+                    throw new Error('Could not load audios');
+                }
+
+                const fileData = await response.json();
+                currentAudioData = {
+                    ...JSON.parse(atob(fileData.content)),
+                    sha: fileData.sha
+                };
+
+                displayAudiosForDelete('');
+            } catch (error) {
+                console.error('Error loading audios:', error);
+            }
+        }
+
+        function displayAudiosForDelete(searchTerm) {
+            if (!currentAudioData) return;
+
+            const allAudios = [
+                ...currentAudioData.sfw.map(a => ({ ...a, type: 'sfw' })),
+                ...currentAudioData.nsfw.map(a => ({ ...a, type: 'nsfw' }))
+            ];
+
+            const filtered = allAudios.filter(a =>
+                a.title.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            audioList.innerHTML = '';
+            
+            if (filtered.length === 0) {
+                audioList.innerHTML = '<div style="padding: 10px; color: #999;">No audios found</div>';
+                return;
+            }
+
+            filtered.forEach(audio => {
+                const item = document.createElement('div');
+                item.className = 'audio-item';
+                item.innerHTML = `
+                    <div>
+                        <div class="audio-item-title">${audio.title}</div>
+                        <div class="audio-item-category">${audio.type.toUpperCase()} • ${audio.category}</div>
+                    </div>
+                    <button type="button" class="delete-item-btn" onclick="deleteAudio(${audio.id}, '${audio.type}')">Delete</button>
+                `;
+                audioList.appendChild(item);
+            });
+        }
+
+        function filterAudioList() {
+            const searchTerm = filterInput.value;
+            displayAudiosForDelete(searchTerm);
+        }
+
+        async function deleteAudio(id, type) {
+            if (!confirm('Are you sure you want to delete this audio?')) {
+                return;
+            }
+
+            try {
+                // Remove from appropriate array
+                const index = currentAudioData[type].findIndex(a => a.id === id);
+                if (index > -1) {
+                    currentAudioData[type].splice(index, 1);
+                }
+
+                // Prepare updated content
+                const updatedContent = {
+                    sfw: currentAudioData.sfw,
+                    nsfw: currentAudioData.nsfw
+                };
+
+                // Commit back to GitHub
+                const newContent = btoa(JSON.stringify(updatedContent, null, 2));
+                const commitResponse = await fetch(
+                    `https://api.github.com/repos/${repoOwner}/${repoName}/contents/data/audio-metadata.json`,
+                    {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `token ${githubToken}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: `Delete audio entry (ID: ${id})`,
+                            content: newContent,
+                            sha: currentAudioData.sha
+                        })
+                    }
+                );
+
+                if (!commitResponse.ok) {
+                    throw new Error('Failed to delete from GitHub');
+                }
+
+                const newFileData = await commitResponse.json();
+                currentAudioData.sha = newFileData.content.sha;
+
+                showMessage(`Audio deleted successfully (ID: ${id})`, 'success');
+                displayAudiosForDelete(filterInput.value);
+            } catch (error) {
+                showMessage(`Error: ${error.message}`, 'error');
+            }
+        }
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -495,10 +701,10 @@
                 }
 
                 const fileData = await response.json();
-                const currentContent = JSON.parse(atob(fileData.content));
+                const content = JSON.parse(atob(fileData.content));
 
                 // 2. Create new audio object
-                const allAudios = [...currentContent.sfw, ...currentContent.nsfw];
+                const allAudios = [...content.sfw, ...content.nsfw];
                 const maxId = allAudios.length > 0 ? Math.max(...allAudios.map(a => a.id)) : 0;
 
                 const newAudio = {
@@ -517,13 +723,13 @@
                 const nsfwCategories = ['roleplay', 'joi', 'moaning', 'erotic', 'phone-sex', 'fantasy', 'intimate'];
                 
                 if (nsfwCategories.some(cat => category.includes(cat))) {
-                    currentContent.nsfw.push(newAudio);
+                    content.nsfw.push(newAudio);
                 } else {
-                    currentContent.sfw.push(newAudio);
+                    content.sfw.push(newAudio);
                 }
 
                 // 4. Commit back to GitHub
-                const newContent = btoa(JSON.stringify(currentContent, null, 2));
+                const newContent = btoa(JSON.stringify(content, null, 2));
                 const commitResponse = await fetch(
                     `https://api.github.com/repos/${repoOwner}/${repoName}/contents/data/audio-metadata.json`,
                     {
@@ -548,6 +754,7 @@
                 form.reset();
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Add Audio';
+                loadAudiosForDelete();
 
             } catch (error) {
                 showMessage(`Error: ${error.message}`, 'error');
@@ -555,6 +762,9 @@
                 submitBtn.textContent = 'Add Audio';
             }
         });
+
+        // Filter setup
+        filterInput.addEventListener('input', filterAudioList);
 
         // Initialize
         updateSetupStatus();
